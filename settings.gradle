@@ -1,0 +1,3 @@
+rootProject.name = "Mechnotifier"
+
+include ':app'
