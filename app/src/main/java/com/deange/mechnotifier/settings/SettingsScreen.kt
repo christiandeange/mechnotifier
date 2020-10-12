@@ -1,3 +1,7 @@
 package com.deange.mechnotifier.settings
 
-object SettingsScreen
+class SettingsScreen(
+  val region: Region,
+  val subregion: Subregion?,
+  val onRegionPicked: (Region, Subregion?) -> Unit
+)

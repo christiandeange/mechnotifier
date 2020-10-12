@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="subregion_ca_all">All Provinces</string>
+  <string name="subregion_ca_ab">Alberta</string>
+  <string name="subregion_ca_bc">British Columbia</string>
+  <string name="subregion_ca_mb">Manitoba</string>
+  <string name="subregion_ca_nb">New Brunswick</string>
+  <string name="subregion_ca_nl">Newfoundland &amp; Labrador</string>
+  <string name="subregion_ca_nt">Northwest Territories</string>
+  <string name="subregion_ca_ns">Nova Scotia</string>
+  <string name="subregion_ca_nu">Nunavut</string>
+  <string name="subregion_ca_on">Ontario</string>
+  <string name="subregion_ca_pe">Prince Edward Island</string>
+  <string name="subregion_ca_qc">Québec</string>
+  <string name="subregion_ca_sk">Saskatchewan</string>
+  <string name="subregion_ca_yt">Yukon</string>
+</resources>

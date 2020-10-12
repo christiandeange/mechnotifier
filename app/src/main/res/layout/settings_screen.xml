@@ -7,12 +7,76 @@
   tools:context=".MainActivity">
 
   <TextView
+    android:id="@+id/region_label"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="Hello World!"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="16dp"
+    android:text="@string/region_label"
+    app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
+
+  <TextView
+    android:id="@+id/post_type_label"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="16dp"
+    android:text="@string/post_type_label"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/region_label" />
+
+  <androidx.constraintlayout.widget.Barrier
+    android:id="@+id/label_end"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:barrierDirection="end"
+    app:constraint_referenced_ids="post_type_label,region_label" />
+
+  <View
+    android:id="@+id/divider"
+    android:layout_width="1dp"
+    android:layout_height="match_parent"
+    android:layout_marginStart="16dp"
+    android:background="@color/settings_divider"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="@+id/label_end"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <Spinner
+    android:id="@+id/region_picker"
+    style="@style/RegionPickerSpinner"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="64dp"
+    app:layout_constraintBaseline_toBaselineOf="@+id/region_label"
+    app:layout_constraintStart_toEndOf="@+id/divider" />
+
+  <Spinner
+    android:id="@+id/subregion_picker"
+    style="@style/RegionPickerSpinner"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:visibility="gone"
+    app:layout_constraintBaseline_toBaselineOf="@+id/region_picker"
+    app:layout_constraintStart_toEndOf="@+id/region_picker"
+    app:layout_constraintEnd_toEndOf="parent"
+    tools:visibility="visible" />
+
+  <EditText
+    android:id="@+id/region_editor"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:hint="@string/region_editor_country_code"
+    android:inputType="text"
+    android:maxLength="2"
+    android:textAllCaps="true"
+    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+    android:visibility="gone"
+    app:layout_constraintBaseline_toBaselineOf="@+id/region_picker"
+    app:layout_constraintStart_toEndOf="@+id/region_picker"
+    app:layout_constraintEnd_toEndOf="parent"
+    tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,3 +1,11 @@
 <resources>
   <string name="app_name">Mechnotifier</string>
+  <string name="region_label">Region</string>
+  <string name="post_type_label">Post Type</string>
+  <string name="region_any">Any Region</string>
+  <string name="region_ca">Canada</string>
+  <string name="region_eu">Europe</string>
+  <string name="region_us">USA</string>
+  <string name="region_other">Other</string>
+  <string name="region_editor_country_code">2-letter country code</string>
 </resources>
