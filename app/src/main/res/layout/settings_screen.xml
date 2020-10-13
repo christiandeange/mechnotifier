@@ -6,6 +6,14 @@
   android:layout_height="match_parent"
   tools:context=".MainActivity">
 
+  <androidx.appcompat.widget.Toolbar
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toTopOf="parent"
+    android:theme="@style/Widget.Toolbar.Dark.Overlay"
+    android:popupTheme="@style/Widget.Toolbar.Dark.Overlay.LightPopup"/>
+
   <TextView
     android:id="@+id/region_label"
     android:layout_width="wrap_content"
@@ -14,7 +22,7 @@
     android:layout_marginTop="16dp"
     android:text="@string/region_label"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
   <TextView
     android:id="@+id/post_type_label"
@@ -36,12 +44,12 @@
   <View
     android:id="@+id/divider"
     android:layout_width="1dp"
-    android:layout_height="match_parent"
+    android:layout_height="0dp"
     android:layout_marginStart="16dp"
     android:background="@color/settings_divider"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintStart_toStartOf="@+id/label_end"
-    app:layout_constraintTop_toTopOf="parent" />
+    app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
   <Spinner
     android:id="@+id/region_picker"

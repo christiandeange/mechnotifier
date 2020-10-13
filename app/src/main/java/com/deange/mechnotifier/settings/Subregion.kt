@@ -14,6 +14,7 @@ import com.deange.mechnotifier.view.Nameable
  * for more details on how regions and subregions are determined.
  */
 interface Subregion : Nameable {
+  val subregionCode: String
   val isAllSubregions: Boolean
 }
 
@@ -35,6 +36,9 @@ enum class CaSubregion(
   QC(R.string.subregion_ca_qc),
   SK(R.string.subregion_ca_sk),
   YT(R.string.subregion_ca_yt),
+  ;
+
+  override val subregionCode: String = name
 }
 
 enum class EuSubregion(
@@ -94,6 +98,9 @@ enum class EuSubregion(
   UA(R.string.subregion_eu_ua),
   UK(R.string.subregion_eu_uk),
   VA(R.string.subregion_eu_va),
+  ;
+
+  override val subregionCode: String = name
 }
 
 enum class UsSubregion(
@@ -158,4 +165,7 @@ enum class UsSubregion(
   WV(R.string.subregion_us_wv),
   WI(R.string.subregion_us_wi),
   WY(R.string.subregion_us_wy),
+  ;
+
+  override val subregionCode: String = name
 }

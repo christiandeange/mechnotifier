@@ -1,16 +1,22 @@
 package com.deange.mechnotifier.dagger
 
-import android.app.Application
-import com.deange.mechnotifier.dagger.SingleInApp
+import com.deange.mechnotifier.topics.TopicWatcher
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import dagger.multibindings.ElementsIntoSet
+import dagger.multibindings.IntoSet
 
 @Module
-class AppModule(private val application: Application) {
+abstract class AppModule {
 
-  @Provides
-  @SingleInApp
-  fun provideApplication(): Application {
-    return application
+  @Binds @IntoSet @SingleInApp
+  abstract fun bindsTopicWatcherAsScoped(
+    topicWatcher: TopicWatcher
+  ): Scoped
+
+  companion object {
+    @Provides @ElementsIntoSet @SingleInApp
+    fun bindsScoped(): Set<@JvmSuppressWildcards Scoped> = emptySet()
   }
 }

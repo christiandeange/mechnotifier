@@ -8,4 +8,6 @@
   <string name="region_us">USA</string>
   <string name="region_other">Other</string>
   <string name="region_editor_country_code">2-letter country code</string>
+  <string name="settings_save">Save</string>
+  <string name="region_other_error">Region code must be two letters.</string>
 </resources>

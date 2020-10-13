@@ -16,12 +16,12 @@ import com.deange.mechnotifier.view.Nameable
  */
 sealed class Region(
   @StringRes override val nameResId: Int,
-  open val countryCode: String,
+  open val regionCode: String,
   val subregions: List<Subregion> = emptyList()
 ) : Nameable {
   fun hasSubregions(): Boolean = subregions.isNotEmpty()
 
-  override fun toString(): String = countryCode
+  override fun toString(): String = regionCode
 }
 
 object AnyRegion : Region(R.string.region_any, "any") {
@@ -35,5 +35,5 @@ object EuropeRegion : Region(R.string.region_eu, "EU", EuSubregion.values().toLi
 object UsaRegion : Region(R.string.region_us, "US", UsSubregion.values().toList())
 
 data class OtherRegion(
-  override val countryCode: String
-) : Region(R.string.region_other, countryCode)
+  override val regionCode: String
+) : Region(R.string.region_other, regionCode)
