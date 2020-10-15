@@ -33,6 +33,7 @@ android {
 
   kotlinOptions {
     jvmTarget = '1.8'
+    freeCompilerArgs += '-Xopt-in=kotlin.ExperimentalStdlibApi'
     freeCompilerArgs += '-Xopt-in=com.squareup.workflow1.ui.WorkflowUiExperimentalApi'
   }
 }
@@ -46,10 +47,12 @@ dependencies {
   implementation 'com.google.dagger:dagger:2.29.1'
   implementation 'com.google.firebase:firebase-messaging:20.3.0'
   implementation 'com.jakewharton.rxrelay2:rxrelay:2.1.1'
+  implementation 'com.squareup.moshi:moshi:1.11.0'
   implementation 'com.squareup.workflow1:workflow-ui-core-android:1.0.0-alpha.4'
   implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.4.10'
 
   kapt 'com.google.dagger:dagger-compiler:2.29.1'
+  kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.11.0'
 
   testImplementation 'junit:junit:4.13'
 }

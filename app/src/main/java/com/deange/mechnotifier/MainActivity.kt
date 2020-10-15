@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    (application as MainApplication).appComponent.inject(this)
+    mainApplication.appComponent.inject(this)
 
     setContentWorkflow(
         settingsViewRegistry,

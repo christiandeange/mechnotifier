@@ -19,10 +19,10 @@ import javax.inject.Inject
 @SingleInApp
 class TopicRepository
 @Inject constructor(
-  app: Application
+  application: Application
 ) {
   private val prefs: Preference<Set<String>> =
-    RxSharedPreferences.create(app.getSharedPreferences("topics", MODE_PRIVATE))
+    RxSharedPreferences.create(application.getSharedPreferences("topics", MODE_PRIVATE))
         .getStringSet("subscribed-topics")
 
   private val topicChanges = PublishRelay.create<TopicChange>()

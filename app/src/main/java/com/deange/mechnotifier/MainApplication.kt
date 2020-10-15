@@ -1,6 +1,7 @@
 package com.deange.mechnotifier
 
 import android.app.Application
+import android.content.Context
 import com.deange.mechnotifier.dagger.AppComponent
 import com.deange.mechnotifier.dagger.ApplicationModule
 import com.deange.mechnotifier.dagger.DaggerAppComponent
@@ -30,3 +31,6 @@ class MainApplication : Application() {
     applicationScoped.forEach { it.onEnterScope(scope) }
   }
 }
+
+val Context.mainApplication: MainApplication
+  get() = applicationContext as MainApplication

@@ -6,4 +6,11 @@ package com.deange.mechnotifier.topics
 data class TopicChange(
   val deleted: Set<Topic>,
   val added: Set<Topic>
-)
+) {
+  init {
+    val intersection: Set<Topic> = added intersect deleted
+    require(intersection.isEmpty()) {
+      "Elements are both deleted and added: ${intersection.asStrings()}"
+    }
+  }
+}

@@ -18,13 +18,22 @@
     </activity>
 
     <service
-      android:name=".MechnotifierMessagingService"
+      android:name=".firebase.FirebaseTopicNotificationService"
       android:exported="false">
       <intent-filter>
         <action android:name="com.google.firebase.MESSAGING_EVENT" />
       </intent-filter>
     </service>
 
+    <receiver
+      android:name=".notification.NotificationActionReceiver"
+      android:exported="false">
+      <intent-filter>
+        <action android:name="com.deange.mechnotifier.action.MARK_ALL_SEEN" />
+        <action android:name="com.deange.mechnotifier.action.MARK_SEEN" />
+        <action android:name="com.deange.mechnotifier.action.OPEN" />
+      </intent-filter>
+    </receiver>
   </application>
 
 </manifest>

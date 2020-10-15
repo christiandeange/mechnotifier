@@ -2,6 +2,7 @@ package com.deange.mechnotifier.dagger
 
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.disposables.Disposable
+import java.io.Closeable
 
 /**
  * A concrete unit in the lifecycle of the global application.
@@ -13,7 +14,7 @@ class Scope
 private constructor(
   private val parentScope: Scope?,
   val name: String
-) {
+): Closeable {
   init {
     require(name.isNotBlank()) { "Provided scope name is blank" }
   }
@@ -48,6 +49,12 @@ private constructor(
       "$parentScope >>> $name"
     }
   }
+
+  /**
+   * Allows the [Closeable.use { }][kotlin.io.use] extension to be applied to a Scope,
+   * [destroying][destroy] it after the lambda block has completed.
+   */
+  override fun close() = destroy()
 
   companion object {
     val ROOT = Scope(null, "root")

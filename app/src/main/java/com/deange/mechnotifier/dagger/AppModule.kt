@@ -1,6 +1,8 @@
 package com.deange.mechnotifier.dagger
 
+import com.deange.mechnotifier.notification.NotificationChannels
 import com.deange.mechnotifier.topics.TopicWatcher
+import com.squareup.moshi.Moshi
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -15,8 +17,16 @@ abstract class AppModule {
     topicWatcher: TopicWatcher
   ): Scoped
 
+  @Binds @IntoSet @SingleInApp
+  abstract fun bindsNotificationChannelsAsScoped(
+    notificationChannels: NotificationChannels
+  ): Scoped
+
   companion object {
     @Provides @ElementsIntoSet @SingleInApp
-    fun bindsScoped(): Set<@JvmSuppressWildcards Scoped> = emptySet()
+    fun providesScoped(): Set<@JvmSuppressWildcards Scoped> = emptySet()
+
+    @Provides
+    fun providesMoshi(): Moshi = Moshi.Builder().build()
   }
 }
