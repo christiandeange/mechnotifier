@@ -1,0 +1,11 @@
+# Steve Jobs
+.DS_Store
+
+# Third-party dependencies folder
+venv
+
+# Python pycache
+__pycache__/
+
+# Ignored by the build system
+/setup.cfg

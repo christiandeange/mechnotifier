@@ -1,0 +1,4 @@
+cron:
+- description: "poll subreddit for new posts"
+  url: /check
+  schedule: every 1 minutes
