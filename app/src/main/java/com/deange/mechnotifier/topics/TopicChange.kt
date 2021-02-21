@@ -8,9 +8,8 @@ data class TopicChange(
   val added: Set<Topic>
 ) {
   init {
-    val intersection: Set<Topic> = added intersect deleted
-    require(intersection.isEmpty()) {
-      "Elements are both deleted and added: ${intersection.asStrings()}"
+    require((added intersect deleted).isEmpty()) {
+      "Elements are both added and deleted: ${added intersect deleted}"
     }
   }
 }

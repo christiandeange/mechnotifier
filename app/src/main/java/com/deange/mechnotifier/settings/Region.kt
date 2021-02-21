@@ -24,8 +24,12 @@ sealed class Region(
   override fun toString(): String = regionCode
 }
 
+object NoRegion : Region(R.string.region_none, "none") {
+  override fun toString(): String = "None"
+}
+
 object AnyRegion : Region(R.string.region_any, "any") {
-  override fun toString(): String = "Any Region"
+  override fun toString(): String = "Anywhere"
 }
 
 object CanadaRegion : Region(R.string.region_ca, "CA", CaSubregion.values().toList())

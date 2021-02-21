@@ -16,6 +16,9 @@ class FirebaseTopics
   private val firebase: FirebaseMessaging = FirebaseMessaging.getInstance()
 
   @CheckResult
+  fun unsubscribeFrom(topic: Topic): Completable = unsubscribeFrom(setOf(topic))
+
+  @CheckResult
   fun unsubscribeFrom(topics: Set<Topic>): Completable {
     val unsubscribeTasks: List<Task<Void>> = topics.map { topic ->
       firebase.unsubscribeFromTopic(topic.name)
@@ -25,6 +28,9 @@ class FirebaseTopics
         .asCompletable()
         .subscribeOn(Schedulers.io())
   }
+
+  @CheckResult
+  fun subscribeTo(topic: Topic): Completable = subscribeTo(setOf(topic))
 
   @CheckResult
   fun subscribeTo(topics: Set<Topic>): Completable {

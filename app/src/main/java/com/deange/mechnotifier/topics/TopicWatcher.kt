@@ -18,18 +18,20 @@ class TopicWatcher
 ) : Scoped {
   override fun onEnterScope(scope: Scope) {
     topicRepository.topics().subscribeWithScope(scope) { topics ->
-      Log.d(TAG, "Topics: ${topics.asStrings()}")
+      Log.d(TAG, "Topics: $topics")
     }
 
     topicRepository.topicChanges()
         .doOnNext { topicChange ->
-          val deleted = topicChange.deleted.asStrings()
-          val added = topicChange.added.asStrings()
-          Log.d(TAG, "Topic diff: (deleted=$deleted, added=$added) [@${topicChange.hashCode()}]")
+          val deleted: Set<Topic> = topicChange.deleted
+          val added: Set<Topic> = topicChange.added
+          Log.d(TAG, "Topic diff: (deleted=$deleted, added=$added)")
         }
-        .flatMap { firebaseTopics.applyChangesFrom(it).andThen(just(it)) }
-        .subscribeWithScope(scope) { topicChange ->
-          Log.d(TAG, "Topic subscriptions diff applied [@${topicChange.hashCode()}]")
+        .flatMap { topicChange ->
+          firebaseTopics.applyChangesFrom(topicChange).andThen(just(topicChange))
+        }
+        .subscribeWithScope(scope) {
+          Log.d(TAG, "Topic subscriptions diff applied.")
         }
   }
 

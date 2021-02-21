@@ -9,7 +9,6 @@ import com.deange.mechnotifier.model.PostSerializer
 import com.deange.mechnotifier.notification.NotificationPublisher
 import com.deange.mechnotifier.notification.PostRepository
 import com.deange.mechnotifier.topics.TopicRepository
-import com.deange.mechnotifier.topics.asStrings
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import io.reactivex.Single.just
@@ -37,9 +36,12 @@ class FirebaseTopicNotificationService : FirebaseMessagingService() {
     val dataMap: Map<String, *> = message.data.toMap()
     val post: Post = postSerializer.posts().jsonToModel(dataMap)
 
-    postRepository.addUnread(post)
-
-    postRepository.unreadPosts()
+    topicRepository.postFilter()
+        .filter { filter -> filter.accept(post) }
+        .switchMap {
+          postRepository.addUnread(post)
+          postRepository.unreadPosts()
+        }
         .take(1)
         .subscribeWithScope(scope) { unreadPosts ->
           notificationPublisher.showNotifications(unreadPosts, newUnreadPost = post)
@@ -54,7 +56,7 @@ class FirebaseTopicNotificationService : FirebaseMessagingService() {
         .take(1)
         .switchMapSingle { topics -> firebaseTopics.subscribeTo(topics).andThen(just(topics)) }
         .subscribeWithScope(scope) { topics ->
-          Log.d(TAG, "Subscribed to topics ${topics.asStrings()} after token refresh.")
+          Log.d(TAG, "Subscribed to $topics after token refresh.")
         }
   }
 
