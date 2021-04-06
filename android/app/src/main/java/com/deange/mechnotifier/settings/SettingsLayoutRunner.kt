@@ -157,7 +157,7 @@ class SettingsLayoutRunner(private val view: View) : LayoutRunner<SettingsScreen
   }
 
   companion object : ViewFactory<SettingsScreen> by bind(
-      R.layout.settings_screen,
-      ::SettingsLayoutRunner
+    R.layout.settings_screen,
+    ::SettingsLayoutRunner
   )
 }

@@ -25,8 +25,8 @@ class FirebaseTopics
     }
 
     return Tasks.whenAll(unsubscribeTasks)
-        .asCompletable()
-        .subscribeOn(Schedulers.io())
+      .asCompletable()
+      .subscribeOn(Schedulers.io())
   }
 
   @CheckResult
@@ -39,15 +39,15 @@ class FirebaseTopics
     }
 
     return Tasks.whenAll(subscribeTasks)
-        .asCompletable()
-        .subscribeOn(Schedulers.io())
+      .asCompletable()
+      .subscribeOn(Schedulers.io())
   }
 
   @CheckResult
   fun applyChangesFrom(topicChange: TopicChange): Completable {
     val allTasks = listOf(
-        unsubscribeFrom(topicChange.deleted),
-        subscribeTo(topicChange.added)
+      unsubscribeFrom(topicChange.deleted),
+      subscribeTo(topicChange.added)
     )
 
     return Completable.merge(allTasks)

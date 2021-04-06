@@ -43,9 +43,9 @@ class NotificationPublisher
     newUnreadPost: Post?
   ) {
     val (id, notification) = createPostNotification(
-        post = post,
-        groupKey = null,
-        withSounds = newUnreadPost == post
+      post = post,
+      groupKey = null,
+      withSounds = newUnreadPost == post
     )
 
     notificationManager.notify(id, notification)
@@ -57,17 +57,17 @@ class NotificationPublisher
     newUnreadPost: Post?
   ) {
     val summary: Notification = createSummaryNotification(
-        postCount = posts.count(),
-        withSounds = newUnreadPost != null && newUnreadPost in posts
+      postCount = posts.count(),
+      withSounds = newUnreadPost != null && newUnreadPost in posts
     )
 
     notificationManager.notify(GROUP_SUMMARY_ID, summary)
 
     posts.forEach { post ->
       val (id, notification) = createPostNotification(
-          post = post,
-          groupKey = POSTS_CHANNEL,
-          withSounds = false
+        post = post,
+        groupKey = POSTS_CHANNEL,
+        withSounds = false
       )
       notificationManager.notify(id, notification)
     }
@@ -82,19 +82,19 @@ class NotificationPublisher
       PendingIntent.getBroadcast(application, GROUP_SUMMARY_ID, deleteIntent, 0)
 
     return NotificationCompat.Builder(application, POSTS_CHANNEL)
-        .setAllowSystemGeneratedContextualActions(true)
-        .setContentText(application.getString(R.string.notification_group_summary, postCount))
-        .setDeleteIntent(pendingDeleteIntent)
-        .setGroup(POSTS_CHANNEL)
-        .setGroupSummary(true)
-        .setPriority(PRIORITY_DEFAULT)
-        .setSmallIcon(R.drawable.ic_baseline_arrow_upward_24)
-        .apply {
-          if (!withSounds) {
-            setNotificationSilent()
-          }
+      .setAllowSystemGeneratedContextualActions(true)
+      .setContentText(application.getString(R.string.notification_group_summary, postCount))
+      .setDeleteIntent(pendingDeleteIntent)
+      .setGroup(POSTS_CHANNEL)
+      .setGroupSummary(true)
+      .setPriority(PRIORITY_DEFAULT)
+      .setSmallIcon(R.drawable.ic_baseline_arrow_upward_24)
+      .apply {
+        if (!withSounds) {
+          setNotificationSilent()
         }
-        .build()
+      }
+      .build()
   }
 
   private fun createPostNotification(
@@ -114,23 +114,23 @@ class NotificationPublisher
 
     val notification: Notification =
       NotificationCompat.Builder(application, POSTS_CHANNEL)
-          .setAllowSystemGeneratedContextualActions(true)
-          .setAutoCancel(true)
-          .setContentIntent(pendingContentIntent)
-          .setContentText(post.title)
-          .setDeleteIntent(pendingDeleteIntent)
-          .setGroup(groupKey)
-          .setOnlyAlertOnce(true)
-          .setPriority(PRIORITY_DEFAULT)
-          .setSmallIcon(R.drawable.ic_baseline_arrow_upward_24)
-          .setStyle(BigTextStyle().bigText(post.title))
-          .setWhen(post.createdMillis)
-          .apply {
-            if (!withSounds) {
-              setNotificationSilent()
-            }
+        .setAllowSystemGeneratedContextualActions(true)
+        .setAutoCancel(true)
+        .setContentIntent(pendingContentIntent)
+        .setContentText(post.title)
+        .setDeleteIntent(pendingDeleteIntent)
+        .setGroup(groupKey)
+        .setOnlyAlertOnce(true)
+        .setPriority(PRIORITY_DEFAULT)
+        .setSmallIcon(R.drawable.ic_baseline_arrow_upward_24)
+        .setStyle(BigTextStyle().bigText(post.title))
+        .setWhen(post.createdMillis)
+        .apply {
+          if (!withSounds) {
+            setNotificationSilent()
           }
-          .build()
+        }
+        .build()
 
     return id to notification
   }

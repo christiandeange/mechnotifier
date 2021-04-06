@@ -19,7 +19,7 @@ class PostRepository
 ) {
   private val prefs: Preference<UnreadPosts> =
     RxSharedPreferences.create(application.getSharedPreferences("posts", MODE_PRIVATE))
-        .getObject("unread-posts", UnreadPosts(emptyList()), unreadPostsConverter)
+      .getObject("unread-posts", UnreadPosts(emptyList()), unreadPostsConverter)
 
   fun markAllAsRead() {
     setUnreads(UnreadPosts(emptyList()))

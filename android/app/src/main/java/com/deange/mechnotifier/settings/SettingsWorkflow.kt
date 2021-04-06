@@ -22,11 +22,11 @@ class SettingsWorkflow
     props: SettingsWorkflowProps,
     snapshot: Snapshot?
   ): SettingsState = SettingsState(
-      region = props.region,
-      subregion = props.subregion,
-      publicTypes = props.publicTypes,
-      postTypes = props.postFilter.postTypes,
-      customRegionError = null
+    region = props.region,
+    subregion = props.subregion,
+    publicTypes = props.publicTypes,
+    postTypes = props.postFilter.postTypes,
+    customRegionError = null
   )
 
   override fun render(
@@ -35,22 +35,22 @@ class SettingsWorkflow
     context: RenderContext
   ): SettingsScreen {
     return SettingsScreen(
-        state.region,
-        state.subregion,
-        state.publicTypes,
-        state.postTypes,
-        state.customRegionError,
-        onRegionPicked = { region, subregion ->
-          context.actionSink.send(onRegionPicked(region, subregion))
-        },
-        onPublicTypesChanged = { publicTypes ->
-          context.actionSink.send(onPublicTypesChanged(publicTypes))
-        },
-        onPostTypesChanged = { postTypes ->
-          context.actionSink.send(onPostTypesChanged(postTypes))
-        },
-        onSaveClicked = { context.actionSink.send(onSaveClicked()) },
-        onBackClicked = { context.actionSink.send(onBackClicked()) }
+      state.region,
+      state.subregion,
+      state.publicTypes,
+      state.postTypes,
+      state.customRegionError,
+      onRegionPicked = { region, subregion ->
+        context.actionSink.send(onRegionPicked(region, subregion))
+      },
+      onPublicTypesChanged = { publicTypes ->
+        context.actionSink.send(onPublicTypesChanged(publicTypes))
+      },
+      onPostTypesChanged = { postTypes ->
+        context.actionSink.send(onPostTypesChanged(postTypes))
+      },
+      onSaveClicked = { context.actionSink.send(onSaveClicked()) },
+      onBackClicked = { context.actionSink.send(onBackClicked()) }
     )
   }
 
@@ -61,9 +61,9 @@ class SettingsWorkflow
     subregion: Subregion?
   ) = action {
     state = state.copy(
-        region = region,
-        subregion = subregion,
-        customRegionError = null
+      region = region,
+      subregion = subregion,
+      customRegionError = null
     )
   }
 
@@ -80,12 +80,12 @@ class SettingsWorkflow
     val regionCode: String = state.region.regionCode
 
     state = state.copy(
-        customRegionError = when {
-          region !is OtherRegion -> null
-          !regionCode.matches(Regex("\\s\\s")) -> Text(R.string.region_other_error)
-          regionCode in PublicType.tagNames() -> Text(R.string.region_reserved_code)
-          else -> null
-        }
+      customRegionError = when {
+        region !is OtherRegion -> null
+        !regionCode.matches(Regex("\\s\\s")) -> Text(R.string.region_other_error)
+        regionCode in PublicType.tagNames() -> Text(R.string.region_reserved_code)
+        else -> null
+      }
     )
 
     if (state.customRegionError == null) {

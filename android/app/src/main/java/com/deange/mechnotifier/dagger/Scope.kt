@@ -14,7 +14,7 @@ class Scope
 private constructor(
   private val parentScope: Scope?,
   val name: String
-): Closeable {
+) : Closeable {
   init {
     require(name.isNotBlank()) { "Provided scope name is blank" }
   }

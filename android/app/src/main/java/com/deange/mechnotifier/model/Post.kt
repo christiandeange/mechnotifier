@@ -47,7 +47,7 @@ data class Post(
     }
     // Grab the ranges between tags (or between the last tag and the end of the title).
     val valueRanges = tagRangesZipped
-        .map { (range1, range2) -> IntRange(range1.last + 1, range2.first - 1) }
+      .map { (range1, range2) -> IntRange(range1.last + 1, range2.first - 1) }
 
     val tags = tagRanges.map { title.substring(it).trim() }
     val values = valueRanges.map { title.substring(it).trim() }

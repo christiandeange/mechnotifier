@@ -59,8 +59,8 @@ class NotificationActionReceiver : BroadcastReceiver() {
   private fun openUrl(context: Context, url: String) {
     // FLAG_ACTIVITY_NEW_TASK is required for starting an Activity from a non-Activity component.
     context.startActivity(
-        Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            .addFlags(FLAG_ACTIVITY_NEW_TASK)
+      Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        .addFlags(FLAG_ACTIVITY_NEW_TASK)
     )
   }
 
@@ -77,13 +77,13 @@ class NotificationActionReceiver : BroadcastReceiver() {
       post: Post
     ): Intent {
       return Intent(context, NotificationActionReceiver::class.java)
-          .setAction(INTENT_ACTION_MARK_POST_SEEN)
-          .putExtra(INTENT_EXTRA_KEY_POST_ID, post.id)
+        .setAction(INTENT_ACTION_MARK_POST_SEEN)
+        .putExtra(INTENT_EXTRA_KEY_POST_ID, post.id)
     }
 
     fun createDeleteAllIntent(context: Context): Intent {
       return Intent(context, NotificationActionReceiver::class.java)
-          .setAction(INTENT_ACTION_MARK_ALL_SEEN)
+        .setAction(INTENT_ACTION_MARK_ALL_SEEN)
     }
 
     fun createOpenIntent(
@@ -91,9 +91,9 @@ class NotificationActionReceiver : BroadcastReceiver() {
       post: Post
     ): Intent {
       return Intent(context, NotificationActionReceiver::class.java)
-          .setAction(INTENT_ACTION_OPEN_POST)
-          .putExtra(INTENT_EXTRA_KEY_POST_ID, post.id)
-          .putExtra(INTENT_EXTRA_KEY_POST_URL, post.url)
+        .setAction(INTENT_ACTION_OPEN_POST)
+        .putExtra(INTENT_EXTRA_KEY_POST_ID, post.id)
+        .putExtra(INTENT_EXTRA_KEY_POST_URL, post.url)
     }
   }
 }

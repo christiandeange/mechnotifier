@@ -37,15 +37,15 @@ class FirebaseTopicNotificationService : FirebaseMessagingService() {
     val post: Post = postSerializer.posts().jsonToModel(dataMap)
 
     topicRepository.postFilter()
-        .filter { filter -> filter.accept(post) }
-        .switchMap {
-          postRepository.addUnread(post)
-          postRepository.unreadPosts()
-        }
-        .take(1)
-        .subscribeWithScope(scope) { unreadPosts ->
-          notificationPublisher.showNotifications(unreadPosts, newUnreadPost = post)
-        }
+      .filter { filter -> filter.accept(post) }
+      .switchMap {
+        postRepository.addUnread(post)
+        postRepository.unreadPosts()
+      }
+      .take(1)
+      .subscribeWithScope(scope) { unreadPosts ->
+        notificationPublisher.showNotifications(unreadPosts, newUnreadPost = post)
+      }
   }
 
   override fun onNewToken(token: String) {
@@ -53,11 +53,11 @@ class FirebaseTopicNotificationService : FirebaseMessagingService() {
 
     // If we are issued a new push token, we need to resubscribe to the same topics.
     topicRepository.topics()
-        .take(1)
-        .switchMapSingle { topics -> firebaseTopics.subscribeTo(topics).andThen(just(topics)) }
-        .subscribeWithScope(scope) { topics ->
-          Log.d(TAG, "Subscribed to $topics after token refresh.")
-        }
+      .take(1)
+      .switchMapSingle { topics -> firebaseTopics.subscribeTo(topics).andThen(just(topics)) }
+      .subscribeWithScope(scope) { topics ->
+        Log.d(TAG, "Subscribed to $topics after token refresh.")
+      }
   }
 
   override fun onDestroy() {

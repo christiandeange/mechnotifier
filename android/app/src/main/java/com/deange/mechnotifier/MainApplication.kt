@@ -16,8 +16,8 @@ class MainApplication : Application() {
 
   val appComponent: AppComponent by lazy {
     DaggerAppComponent.builder()
-        .applicationModule(ApplicationModule(this))
-        .build()
+      .applicationModule(ApplicationModule(this))
+      .build()
   }
 
   val scope: Scope = Scope.ROOT

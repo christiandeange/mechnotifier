@@ -9,10 +9,10 @@ import dagger.Component
 
 @SingleInApp
 @Component(
-    modules = [
-      ApplicationModule::class,
-      AppModule::class
-    ]
+  modules = [
+    ApplicationModule::class,
+    AppModule::class
+  ]
 )
 interface AppComponent {
   fun modelCreator(): PostSerializer

@@ -22,17 +22,17 @@ class TopicWatcher
     }
 
     topicRepository.topicChanges()
-        .doOnNext { topicChange ->
-          val deleted: Set<Topic> = topicChange.deleted
-          val added: Set<Topic> = topicChange.added
-          Log.d(TAG, "Topic diff: (deleted=$deleted, added=$added)")
-        }
-        .flatMap { topicChange ->
-          firebaseTopics.applyChangesFrom(topicChange).andThen(just(topicChange))
-        }
-        .subscribeWithScope(scope) {
-          Log.d(TAG, "Topic subscriptions diff applied.")
-        }
+      .doOnNext { topicChange ->
+        val deleted: Set<Topic> = topicChange.deleted
+        val added: Set<Topic> = topicChange.added
+        Log.d(TAG, "Topic diff: (deleted=$deleted, added=$added)")
+      }
+      .flatMap { topicChange ->
+        firebaseTopics.applyChangesFrom(topicChange).andThen(just(topicChange))
+      }
+      .subscribeWithScope(scope) {
+        Log.d(TAG, "Topic subscriptions diff applied.")
+      }
   }
 
   private companion object {

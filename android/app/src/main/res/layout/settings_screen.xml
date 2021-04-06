@@ -1,211 +1,235 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:orientation="vertical"
-  tools:context=".MainActivity">
-
-  <androidx.appcompat.widget.Toolbar
-    android:id="@+id/toolbar"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:popupTheme="@style/Widget.Toolbar.Dark.Overlay.LightPopup"
-    android:theme="@style/Widget.Toolbar.Dark.Overlay" />
-
-  <ScrollView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:orientation="vertical"
+    tools:context=".MainActivity"
+    >
+
+  <androidx.appcompat.widget.Toolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:popupTheme="@style/Widget.Toolbar.Dark.Overlay.LightPopup"
+      android:theme="@style/Widget.Toolbar.Dark.Overlay"
+      />
+
+  <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:fillViewport="true"
+      >
 
     <androidx.constraintlayout.widget.ConstraintLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
 
       <CheckBox
-        android:id="@+id/region_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:button="@null"
-        android:clickable="false"
-        android:text="@string/region_label"
-        android:textAppearance="?textAppearanceBody2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+          android:id="@+id/region_label"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="16dp"
+          android:layout_marginTop="16dp"
+          android:button="@null"
+          android:clickable="false"
+          android:text="@string/region_label"
+          android:textAppearance="?textAppearanceBody2"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          />
 
       <CheckBox
-        android:id="@+id/post_type_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:button="@null"
-        android:clickable="false"
-        android:text="@string/post_type_label"
-        android:textAppearance="?textAppearanceBody2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/region_label" />
+          android:id="@+id/post_type_label"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="16dp"
+          android:layout_marginTop="16dp"
+          android:button="@null"
+          android:clickable="false"
+          android:text="@string/post_type_label"
+          android:textAppearance="?textAppearanceBody2"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/region_label"
+          />
 
       <CheckBox
-        android:id="@+id/public_post_type_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:button="@null"
-        android:clickable="false"
-        android:text="@string/public_post_type_label"
-        android:textAppearance="?textAppearanceBody2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/post_type_barrier" />
+          android:id="@+id/public_post_type_label"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="16dp"
+          android:layout_marginTop="16dp"
+          android:button="@null"
+          android:clickable="false"
+          android:text="@string/public_post_type_label"
+          android:textAppearance="?textAppearanceBody2"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="@+id/post_type_barrier"
+          />
 
       <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/label_end"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="end"
-        app:constraint_referenced_ids="region_label,post_type_label,public_post_type_label" />
+          android:id="@+id/label_end"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          app:barrierDirection="end"
+          app:constraint_referenced_ids="region_label,post_type_label,public_post_type_label"
+          />
 
       <View
-        android:id="@+id/divider"
-        android:layout_width="1dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:background="@color/settings_divider"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/label_end"
-        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+          android:id="@+id/divider"
+          android:layout_width="1dp"
+          android:layout_height="0dp"
+          android:layout_marginStart="16dp"
+          android:background="@color/settings_divider"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintStart_toStartOf="@+id/label_end"
+          app:layout_constraintTop_toBottomOf="@id/toolbar"
+          />
 
       <Spinner
-        android:id="@+id/region_picker"
-        style="@style/RegionPickerSpinner"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="64dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/region_label"
-        app:layout_constraintStart_toEndOf="@+id/divider" />
+          android:id="@+id/region_picker"
+          style="@style/RegionPickerSpinner"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="16dp"
+          android:layout_marginEnd="64dp"
+          app:layout_constraintBaseline_toBaselineOf="@+id/region_label"
+          app:layout_constraintStart_toEndOf="@+id/divider"
+          />
 
       <Spinner
-        android:id="@+id/subregion_picker"
-        style="@style/RegionPickerSpinner"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBaseline_toBaselineOf="@+id/region_picker"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/region_picker"
-        tools:visibility="visible" />
+          android:id="@+id/subregion_picker"
+          style="@style/RegionPickerSpinner"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:visibility="gone"
+          app:layout_constraintBaseline_toBaselineOf="@+id/region_picker"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toEndOf="@+id/region_picker"
+          tools:visibility="visible"
+          />
 
       <EditText
-        android:id="@+id/region_editor"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/region_editor_country_code"
-        android:inputType="text"
-        android:maxLength="2"
-        android:textAllCaps="true"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        android:visibility="gone"
-        app:layout_constraintBaseline_toBaselineOf="@+id/region_picker"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/region_picker"
-        tools:visibility="visible" />
+          android:id="@+id/region_editor"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:hint="@string/region_editor_country_code"
+          android:inputType="text"
+          android:maxLength="2"
+          android:textAllCaps="true"
+          android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+          android:visibility="gone"
+          app:layout_constraintBaseline_toBaselineOf="@+id/region_picker"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toEndOf="@+id/region_picker"
+          tools:visibility="visible"
+          />
 
       <RadioGroup
-        android:id="@+id/post_type_group"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/divider"
-        app:layout_constraintTop_toTopOf="@+id/post_type_label">
+          android:id="@+id/post_type_group"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="16dp"
+          android:layout_marginEnd="16dp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toEndOf="@+id/divider"
+          app:layout_constraintTop_toTopOf="@+id/post_type_label"
+          >
 
         <CheckBox
-          android:id="@+id/post_type_buying"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:text="@string/post_type_buying" />
+            android:id="@+id/post_type_buying"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/post_type_buying"
+            />
 
         <CheckBox
-          android:id="@+id/post_type_selling"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:text="@string/post_type_selling" />
+            android:id="@+id/post_type_selling"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/post_type_selling"
+            />
 
         <CheckBox
-          android:id="@+id/post_type_trading"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:text="@string/post_type_trading" />
+            android:id="@+id/post_type_trading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/post_type_trading"
+            />
 
       </RadioGroup>
 
       <TextView
-        android:id="@+id/post_type_empty_warning"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/post_type_empty_warning"
-        android:textAppearance="?textAppearanceCaption"
-        app:layout_constraintEnd_toEndOf="@+id/post_type_group"
-        app:layout_constraintStart_toStartOf="@+id/post_type_group"
-        app:layout_constraintTop_toBottomOf="@+id/post_type_group" />
+          android:id="@+id/post_type_empty_warning"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:text="@string/post_type_empty_warning"
+          android:textAppearance="?textAppearanceCaption"
+          app:layout_constraintEnd_toEndOf="@+id/post_type_group"
+          app:layout_constraintStart_toStartOf="@+id/post_type_group"
+          app:layout_constraintTop_toBottomOf="@+id/post_type_group"
+          />
 
       <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/post_type_barrier"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="post_type_group,post_type_empty_warning" />
+          android:id="@+id/post_type_barrier"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          app:barrierDirection="bottom"
+          app:constraint_referenced_ids="post_type_group,post_type_empty_warning"
+          />
 
       <RadioGroup
-        android:id="@+id/public_type_group"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/divider"
-        app:layout_constraintTop_toTopOf="@+id/public_post_type_label">
+          android:id="@+id/public_type_group"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="16dp"
+          android:layout_marginEnd="16dp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toEndOf="@+id/divider"
+          app:layout_constraintTop_toTopOf="@+id/public_post_type_label"
+          >
 
         <CheckBox
-          android:id="@+id/public_type_interest_check"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:tag="IC"
-          android:text="@string/public_type_interest_check" />
+            android:id="@+id/public_type_interest_check"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:tag="IC"
+            android:text="@string/public_type_interest_check"
+            />
 
         <CheckBox
-          android:id="@+id/public_type_group_buy"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:tag="GB"
-          android:text="@string/public_type_group_buy" />
+            android:id="@+id/public_type_group_buy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:tag="GB"
+            android:text="@string/public_type_group_buy"
+            />
 
         <CheckBox
-          android:id="@+id/public_type_artisan"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:tag="Artisan"
-          android:text="@string/public_type_artisan" />
+            android:id="@+id/public_type_artisan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:tag="Artisan"
+            android:text="@string/public_type_artisan"
+            />
 
         <CheckBox
-          android:id="@+id/public_type_service"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:tag="Service"
-          android:text="@string/public_type_service" />
+            android:id="@+id/public_type_service"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:tag="Service"
+            android:text="@string/public_type_service"
+            />
 
         <CheckBox
-          android:id="@+id/public_type_vendor"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:tag="Vendor"
-          android:text="@string/public_type_vendor" />
+            android:id="@+id/public_type_vendor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:tag="Vendor"
+            android:text="@string/public_type_vendor"
+            />
 
       </RadioGroup>
 

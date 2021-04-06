@@ -33,10 +33,10 @@ class MainActivity : AppCompatActivity() {
     scope = mainApplication.scope + this::class.java.name
 
     combineLatest(topicRepository.topics(), topicRepository.postFilter(), ::Pair)
-        .take(1)
-        .subscribeWithScope(scope) { (topics, postFilter) ->
-          startWorkflow(topics, postFilter)
-        }
+      .take(1)
+      .subscribeWithScope(scope) { (topics, postFilter) ->
+        startWorkflow(topics, postFilter)
+      }
   }
 
   private fun startWorkflow(
@@ -47,19 +47,19 @@ class MainActivity : AppCompatActivity() {
     val publicTypes = topics.mapNotNull { topicCreator.toPublicTypeOrNull(it) }.toSet()
 
     setContentWorkflow(
-        registry = settingsViewRegistry,
-        configure = {
-          WorkflowRunner.Config(
-              workflow = settingsWorkflow,
-              props = SettingsWorkflowProps(
-                  region = region,
-                  subregion = subregion,
-                  publicTypes = publicTypes,
-                  postFilter = postFilter
-              )
+      registry = settingsViewRegistry,
+      configure = {
+        WorkflowRunner.Config(
+          workflow = settingsWorkflow,
+          props = SettingsWorkflowProps(
+            region = region,
+            subregion = subregion,
+            publicTypes = publicTypes,
+            postFilter = postFilter
           )
-        },
-        onResult = { finishAfterTransition() }
+        )
+      },
+      onResult = { finishAfterTransition() }
     )
   }
 

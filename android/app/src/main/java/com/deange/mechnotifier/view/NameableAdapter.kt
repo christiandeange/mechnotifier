@@ -45,6 +45,6 @@ class NameableAdapter<T : Nameable>(
     resource: Int
   ): View {
     return ((convertView ?: inflater.inflate(resource, parent, false)) as TextView)
-        .also { it.setText(getItem(position).nameResId) }
+      .also { it.setText(getItem(position).nameResId) }
   }
 }
