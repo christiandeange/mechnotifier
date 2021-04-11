@@ -62,6 +62,6 @@ data class Post(
   private companion object {
     private val TAG_REGEX = Regex("""\[[^]]+\]""")
     private val MONEY_REGEX =
-      Regex(""".*(cash|paypal|\$|ltc|฿|btc|bitcoin|money|monies|emt).*""", IGNORE_CASE)
+      Regex(""".*(cash|paypal|\$|ltc|฿|btc|bitcoin|money|monies|emt|etransfer).*""", IGNORE_CASE)
   }
 }
