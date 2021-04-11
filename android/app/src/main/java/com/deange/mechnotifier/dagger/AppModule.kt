@@ -1,13 +1,14 @@
 package com.deange.mechnotifier.dagger
 
 import com.deange.mechnotifier.model.PostFilter
-import com.deange.mechnotifier.model.PostFilterConverter
+import com.deange.mechnotifier.model.PostFilterSerializer
 import com.deange.mechnotifier.model.UnreadPosts
-import com.deange.mechnotifier.model.UnreadPostsConverter
+import com.deange.mechnotifier.model.UnreadPostsSerializer
 import com.deange.mechnotifier.notification.NotificationChannels
+import com.deange.mechnotifier.topics.TopicRepository
 import com.deange.mechnotifier.topics.TopicWatcher
-import com.f2prateek.rx.preferences2.Preference.Converter
 import com.squareup.moshi.Moshi
+import com.tfcporciuncula.flow.Serializer
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -23,19 +24,24 @@ abstract class AppModule {
   ): Scoped
 
   @Binds @IntoSet @SingleInApp
+  abstract fun bindsTopicRepositoryAsScoped(
+    topicRepository: TopicRepository
+  ): Scoped
+
+  @Binds @IntoSet @SingleInApp
   abstract fun bindsNotificationChannelsAsScoped(
     notificationChannels: NotificationChannels
   ): Scoped
 
   @Binds
-  abstract fun bindsPostFilterConverter(
-    converter: PostFilterConverter
-  ): Converter<PostFilter>
+  abstract fun bindsPostFilterSerializer(
+    converter: PostFilterSerializer
+  ): Serializer<PostFilter>
 
   @Binds
-  abstract fun bindsUnreadPostsConverter(
-    converter: UnreadPostsConverter
-  ): Converter<UnreadPosts>
+  abstract fun bindsUnreadPostsSerializer(
+    converter: UnreadPostsSerializer
+  ): Serializer<UnreadPosts>
 
   companion object {
     @Provides @ElementsIntoSet @SingleInApp

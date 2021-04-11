@@ -5,21 +5,22 @@ import android.content.Context.MODE_PRIVATE
 import com.deange.mechnotifier.dagger.SingleInApp
 import com.deange.mechnotifier.model.Post
 import com.deange.mechnotifier.model.UnreadPosts
-import com.f2prateek.rx.preferences2.Preference
-import com.f2prateek.rx.preferences2.Preference.Converter
-import com.f2prateek.rx.preferences2.RxSharedPreferences
-import io.reactivex.Observable
+import com.tfcporciuncula.flow.FlowSharedPreferences
+import com.tfcporciuncula.flow.Preference
+import com.tfcporciuncula.flow.Serializer
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import javax.inject.Inject
 
 @SingleInApp
 class PostRepository
 @Inject constructor(
   application: Application,
-  unreadPostsConverter: Converter<UnreadPosts>
+  unreadPostsSerializer: Serializer<UnreadPosts>
 ) {
   private val prefs: Preference<UnreadPosts> =
-    RxSharedPreferences.create(application.getSharedPreferences("posts", MODE_PRIVATE))
-      .getObject("unread-posts", UnreadPosts(emptyList()), unreadPostsConverter)
+    FlowSharedPreferences(application.getSharedPreferences("posts", MODE_PRIVATE))
+      .getObject("unread-posts", unreadPostsSerializer, UnreadPosts(emptyList()))
 
   fun markAllAsRead() {
     setUnreads(UnreadPosts(emptyList()))
@@ -37,7 +38,7 @@ class PostRepository
     prefs.set(unreadPosts)
   }
 
-  fun unreadPosts(): Observable<UnreadPosts> {
-    return prefs.asObservable().distinctUntilChanged()
+  fun unreadPosts(): Flow<UnreadPosts> {
+    return prefs.asFlow().distinctUntilChanged()
   }
 }

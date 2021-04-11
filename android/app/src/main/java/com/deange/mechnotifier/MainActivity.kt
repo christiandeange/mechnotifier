@@ -3,7 +3,7 @@ package com.deange.mechnotifier
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.deange.mechnotifier.dagger.Scope
-import com.deange.mechnotifier.dagger.subscribeWithScope
+import com.deange.mechnotifier.dagger.collectIn
 import com.deange.mechnotifier.model.PostFilter
 import com.deange.mechnotifier.settings.SettingsViewRegistry
 import com.deange.mechnotifier.settings.SettingsWorkflow
@@ -13,9 +13,8 @@ import com.deange.mechnotifier.topics.TopicCreator
 import com.deange.mechnotifier.topics.TopicRepository
 import com.squareup.workflow1.ui.WorkflowRunner
 import com.squareup.workflow1.ui.setContentWorkflow
-import io.reactivex.Observable.combineLatest
-import io.reactivex.functions.BiFunction
-import java.util.EnumSet
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.take
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -32,9 +31,9 @@ class MainActivity : AppCompatActivity() {
     mainApplication.appComponent.inject(this)
     scope = mainApplication.scope + this::class.java.name
 
-    combineLatest(topicRepository.topics(), topicRepository.postFilter(), ::Pair)
+    combine(topicRepository.topics(), topicRepository.postFilter(), ::Pair)
       .take(1)
-      .subscribeWithScope(scope) { (topics, postFilter) ->
+      .collectIn(scope) { (topics, postFilter) ->
         startWorkflow(topics, postFilter)
       }
   }

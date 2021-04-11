@@ -1,13 +1,11 @@
 package com.deange.mechnotifier.firebase
 
-import androidx.annotation.CheckResult
 import com.deange.mechnotifier.topics.Topic
 import com.deange.mechnotifier.topics.TopicChange
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.messaging.FirebaseMessaging
-import io.reactivex.Completable
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 class FirebaseTopics
@@ -15,41 +13,32 @@ class FirebaseTopics
 ) {
   private val firebase: FirebaseMessaging = FirebaseMessaging.getInstance()
 
-  @CheckResult
-  fun unsubscribeFrom(topic: Topic): Completable = unsubscribeFrom(setOf(topic))
+  suspend fun unsubscribeFrom(topic: Topic) {
+    unsubscribeFrom(setOf(topic))
+  }
 
-  @CheckResult
-  fun unsubscribeFrom(topics: Set<Topic>): Completable {
+  suspend fun unsubscribeFrom(topics: Set<Topic>) {
     val unsubscribeTasks: List<Task<Void>> = topics.map { topic ->
       firebase.unsubscribeFromTopic(topic.name)
     }
 
-    return Tasks.whenAll(unsubscribeTasks)
-      .asCompletable()
-      .subscribeOn(Schedulers.io())
+    Tasks.whenAll(unsubscribeTasks).asFlow().collect()
   }
 
-  @CheckResult
-  fun subscribeTo(topic: Topic): Completable = subscribeTo(setOf(topic))
+  suspend fun subscribeTo(topic: Topic) {
+    subscribeTo(setOf(topic))
+  }
 
-  @CheckResult
-  fun subscribeTo(topics: Set<Topic>): Completable {
+  suspend fun subscribeTo(topics: Set<Topic>) {
     val subscribeTasks: List<Task<Void>> = topics.map { topic ->
       firebase.subscribeToTopic(topic.name)
     }
 
-    return Tasks.whenAll(subscribeTasks)
-      .asCompletable()
-      .subscribeOn(Schedulers.io())
+    Tasks.whenAll(subscribeTasks).asFlow().collect()
   }
 
-  @CheckResult
-  fun applyChangesFrom(topicChange: TopicChange): Completable {
-    val allTasks = listOf(
-      unsubscribeFrom(topicChange.deleted),
-      subscribeTo(topicChange.added)
-    )
-
-    return Completable.merge(allTasks)
+  suspend fun applyChangesFrom(topicChange: TopicChange) {
+    unsubscribeFrom(topicChange.deleted)
+    subscribeTo(topicChange.added)
   }
 }

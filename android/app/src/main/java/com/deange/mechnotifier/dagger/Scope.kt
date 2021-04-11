@@ -1,8 +1,14 @@
 package com.deange.mechnotifier.dagger
 
-import com.jakewharton.rxrelay2.BehaviorRelay
-import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
+import kotlinx.coroutines.runBlocking
 import java.io.Closeable
+import kotlin.coroutines.CoroutineContext
 
 /**
  * A concrete unit in the lifecycle of the global application.
@@ -19,27 +25,27 @@ private constructor(
     require(name.isNotBlank()) { "Provided scope name is blank" }
   }
 
+  private val coroutineScope: CoroutineScope = if (parentScope == null) {
+    CoroutineScope(CoroutineName(name) + Dispatchers.Main)
+  } else {
+    parentScope.coroutineScope + CoroutineName(name) + Dispatchers.Default
+  }
+  private val coroutineContext: CoroutineContext = coroutineScope.coroutineContext
+
   private val childScopes = mutableSetOf<Scope>()
-  private val disposables = mutableSetOf<Disposable>()
-  private val destroyed = BehaviorRelay.create<Unit>()
+  private val destroyed = Job()
 
   operator fun plus(childScopeName: String): Scope {
-    check(!destroyed.hasValue()) { "Scope ${toString()} has already been destroyed" }
+    check(destroyed.isActive) { "Scope ${toString()} has already been destroyed" }
 
     return Scope(parentScope = this, name = childScopeName).also { childScope ->
       childScopes += childScope
     }
   }
 
-  fun onExit(block: (Scope) -> Unit) {
-    disposables += destroyed.subscribe { block(this) }
-  }
-
   fun destroy() {
     childScopes.forEach(Scope::destroy)
-
-    destroyed.accept(Unit)
-    disposables.forEach(Disposable::dispose)
+    destroyed.complete()
   }
 
   override fun toString(): String {
@@ -55,6 +61,17 @@ private constructor(
    * [destroying][destroy] it after the lambda block has completed.
    */
   override fun close() = destroy()
+
+  fun launch(block: suspend CoroutineScope.() -> Unit): Job {
+    return coroutineScope.launch(block = block)
+  }
+
+  fun <T> runBlocking(
+    name: String = this.name,
+    block: suspend CoroutineScope.() -> T
+  ): T {
+    return runBlocking(coroutineContext + CoroutineName(name), block)
+  }
 
   companion object {
     val ROOT = Scope(null, "root")

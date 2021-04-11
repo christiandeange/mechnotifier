@@ -37,7 +37,7 @@ data class Post(
   fun tags(): Map<String, String> {
     val tagRanges: List<IntRange> = TAG_REGEX.findAll(title).toList().map { it.range }
 
-    val endsWithTag = tagRanges.last().last == title.length - 1
+    val endsWithTag = tagRanges.last().last == title.lastIndex
 
     val tagRangesZipped = if (endsWithTag) {
       tagRanges.zipWithNext()

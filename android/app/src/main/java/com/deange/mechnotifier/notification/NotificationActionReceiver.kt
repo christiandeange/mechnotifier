@@ -5,10 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
+import android.util.Log
 import com.deange.mechnotifier.mainApplication
 import com.deange.mechnotifier.model.Post
-import com.deange.mechnotifier.model.UnreadPosts
-import java.util.concurrent.TimeUnit.SECONDS
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
 
 class NotificationActionReceiver : BroadcastReceiver() {
@@ -19,6 +20,7 @@ class NotificationActionReceiver : BroadcastReceiver() {
     context: Context,
     intent: Intent
   ) {
+    Log.d(TAG, "NotificationActionReceiver received $intent")
     context.mainApplication.appComponent.inject(this)
     val scope = context.mainApplication.scope + this::class.java.name
 
@@ -43,8 +45,12 @@ class NotificationActionReceiver : BroadcastReceiver() {
       // Fortunately the preference should always emit the currently-stored value, so this should
       // be synchronous. Adding a 2-second timeout ensures, in an absolute worst-case scenario,
       // that we don't lock the main thread for long enough to cause an ANR.
-      val unreadPosts = postRepository.unreadPosts().timeout(2, SECONDS).blockingFirst()
-      notificationPublisher.showNotifications(unreadPosts, newUnreadPost = null)
+      scope.runBlocking("NotificationActionReceiver.onReceive") {
+        withTimeout(2000) {
+          val unreadPosts = postRepository.unreadPosts().first()
+          notificationPublisher.showNotifications(unreadPosts, newUnreadPost = null)
+        }
+      }
     }
   }
 
@@ -71,6 +77,8 @@ class NotificationActionReceiver : BroadcastReceiver() {
 
     private const val INTENT_EXTRA_KEY_POST_ID = "key-post-id"
     private const val INTENT_EXTRA_KEY_POST_URL = "key-post-url"
+
+    private val TAG = NotificationActionReceiver::class.java.simpleName
 
     fun createDeleteIntent(
       context: Context,

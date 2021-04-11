@@ -2,7 +2,7 @@ package com.deange.mechnotifier.firebase
 
 import android.util.Log
 import com.deange.mechnotifier.dagger.Scope
-import com.deange.mechnotifier.dagger.subscribeWithScope
+import com.deange.mechnotifier.dagger.collectIn
 import com.deange.mechnotifier.mainApplication
 import com.deange.mechnotifier.model.Post
 import com.deange.mechnotifier.model.PostSerializer
@@ -11,7 +11,10 @@ import com.deange.mechnotifier.notification.PostRepository
 import com.deange.mechnotifier.topics.TopicRepository
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import io.reactivex.Single.just
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.take
 import javax.inject.Inject
 
 class FirebaseTopicNotificationService : FirebaseMessagingService() {
@@ -38,12 +41,12 @@ class FirebaseTopicNotificationService : FirebaseMessagingService() {
 
     topicRepository.postFilter()
       .filter { filter -> filter.accept(post) }
-      .switchMap {
+      .flatMapLatest {
         postRepository.addUnread(post)
         postRepository.unreadPosts()
       }
       .take(1)
-      .subscribeWithScope(scope) { unreadPosts ->
+      .collectIn(scope) { unreadPosts ->
         notificationPublisher.showNotifications(unreadPosts, newUnreadPost = post)
       }
   }
@@ -54,8 +57,11 @@ class FirebaseTopicNotificationService : FirebaseMessagingService() {
     // If we are issued a new push token, we need to resubscribe to the same topics.
     topicRepository.topics()
       .take(1)
-      .switchMapSingle { topics -> firebaseTopics.subscribeTo(topics).andThen(just(topics)) }
-      .subscribeWithScope(scope) { topics ->
+      .flatMapLatest { topics ->
+        firebaseTopics.subscribeTo(topics)
+        flowOf(topics)
+      }
+      .collectIn(scope) { topics ->
         Log.d(TAG, "Subscribed to $topics after token refresh.")
       }
   }

@@ -15,7 +15,7 @@ fun Set<String>.asTopics(): Set<Topic> {
   return map(::Topic).toSet()
 }
 
-/** Converts a set of [Topic]s to [Strings]s. */
+/** Converts a set of [Topic]s to [String]s. */
 fun Set<Topic>.asStrings(): Set<String> {
   return map { it.name }.toSet()
 }
