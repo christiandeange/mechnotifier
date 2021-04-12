@@ -11,7 +11,8 @@ import dagger.Component
 @Component(
   modules = [
     ApplicationModule::class,
-    AppModule::class
+    AppModule::class,
+    DbModule::class,
   ]
 )
 interface AppComponent {

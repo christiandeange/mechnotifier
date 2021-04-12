@@ -10,8 +10,6 @@ class PostSerializer
 ) {
   fun posts(): ModelSerializer<Post> = ModelSerializer(moshi)
 
-  fun unreadPosts(): ModelSerializer<UnreadPosts> = ModelSerializer(moshi)
-
   class ModelSerializer<T>(val moshi: Moshi) {
     inline fun <reified T : Any> jsonToModel(dataMap: Map<String, *>): T {
       return moshi.adapter<T>().fromJsonValue(dataMap)!!

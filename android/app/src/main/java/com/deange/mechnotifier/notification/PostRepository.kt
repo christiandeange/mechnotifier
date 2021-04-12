@@ -1,44 +1,37 @@
 package com.deange.mechnotifier.notification
 
-import android.app.Application
-import android.content.Context.MODE_PRIVATE
 import com.deange.mechnotifier.dagger.SingleInApp
+import com.deange.mechnotifier.db.PostDao
 import com.deange.mechnotifier.model.Post
-import com.deange.mechnotifier.model.UnreadPosts
-import com.tfcporciuncula.flow.FlowSharedPreferences
-import com.tfcporciuncula.flow.Preference
-import com.tfcporciuncula.flow.Serializer
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 @SingleInApp
 class PostRepository
 @Inject constructor(
-  application: Application,
-  unreadPostsSerializer: Serializer<UnreadPosts>
+  private val postDao: PostDao
 ) {
-  private val prefs: Preference<UnreadPosts> =
-    FlowSharedPreferences(application.getSharedPreferences("posts", MODE_PRIVATE))
-      .getObject("unread-posts", unreadPostsSerializer, UnreadPosts(emptyList()))
-
-  fun markAllAsRead() {
-    setUnreads(UnreadPosts(emptyList()))
+  suspend fun markAllAsRead() {
+    val allPosts = postDao.posts()
+    val allPostsAsRead = allPosts.map { it.copy(unread = false) }
+    postDao.updatePosts(allPostsAsRead)
   }
 
-  fun markAsRead(postId: String) {
-    setUnreads(prefs.get().read(postId))
+  suspend fun markAsRead(postId: String) {
+    postDao.post(postId)?.let { post ->
+      postDao.updatePost(post.copy(unread = false))
+    }
   }
 
-  fun addUnread(post: Post) {
-    setUnreads(prefs.get() + post)
+  suspend fun addUnread(post: Post) {
+    postDao.insertPost(post.copy(unread = true))
   }
 
-  private fun setUnreads(unreadPosts: UnreadPosts) {
-    prefs.set(unreadPosts)
-  }
-
-  fun unreadPosts(): Flow<UnreadPosts> {
-    return prefs.asFlow().distinctUntilChanged()
+  fun unreadPosts(): Flow<List<Post>> {
+    return postDao.postsFlow()
+      .map { posts -> posts.filter { it.unread } }
+      .distinctUntilChanged()
   }
 }

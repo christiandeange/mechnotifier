@@ -10,7 +10,6 @@ import androidx.core.app.NotificationCompat.PRIORITY_DEFAULT
 import androidx.core.app.NotificationManagerCompat
 import com.deange.mechnotifier.R
 import com.deange.mechnotifier.model.Post
-import com.deange.mechnotifier.model.UnreadPosts
 import com.deange.mechnotifier.notification.NotificationActionReceiver.Companion.createDeleteAllIntent
 import com.deange.mechnotifier.notification.NotificationActionReceiver.Companion.createDeleteIntent
 import com.deange.mechnotifier.notification.NotificationActionReceiver.Companion.createOpenIntent
@@ -24,13 +23,13 @@ class NotificationPublisher
   private val notificationManager = NotificationManagerCompat.from(application)
 
   fun showNotifications(
-    unreadPosts: UnreadPosts,
+    unreadPosts: List<Post>,
     newUnreadPost: Post?
   ) {
-    when (unreadPosts.posts.count()) {
+    when (unreadPosts.count()) {
       0 -> showNoNotifications()
-      1 -> showOneNotification(unreadPosts.posts.single(), newUnreadPost)
-      else -> showMultipleNotifications(unreadPosts.posts, newUnreadPost)
+      1 -> showOneNotification(unreadPosts.single(), newUnreadPost)
+      else -> showMultipleNotifications(unreadPosts, newUnreadPost)
     }
   }
 

@@ -25,28 +25,27 @@ class NotificationActionReceiver : BroadcastReceiver() {
     val scope = context.mainApplication.scope + this::class.java.name
 
     scope.use {
-      when (intent.action) {
-        INTENT_ACTION_MARK_POST_SEEN -> {
-          markAsRead(intent.getStringExtra(INTENT_EXTRA_KEY_POST_ID)!!)
-        }
-        INTENT_ACTION_MARK_ALL_SEEN -> {
-          markAllAsRead()
-        }
-        INTENT_ACTION_OPEN_POST -> {
-          markAsRead(intent.getStringExtra(INTENT_EXTRA_KEY_POST_ID)!!)
-          openUrl(context, intent.getStringExtra(INTENT_EXTRA_KEY_POST_URL)!!)
-        }
-        else -> {
-          return@use
-        }
-      }
-
       // We're in a BroadcastReceiver here still, so we can't actually perform any async work.
       // Fortunately the preference should always emit the currently-stored value, so this should
       // be synchronous. Adding a 2-second timeout ensures, in an absolute worst-case scenario,
       // that we don't lock the main thread for long enough to cause an ANR.
       scope.runBlocking("NotificationActionReceiver.onReceive") {
         withTimeout(2000) {
+          when (intent.action) {
+            INTENT_ACTION_MARK_POST_SEEN -> {
+              markAsRead(intent.getStringExtra(INTENT_EXTRA_KEY_POST_ID)!!)
+            }
+            INTENT_ACTION_MARK_ALL_SEEN -> {
+              markAllAsRead()
+            }
+            INTENT_ACTION_OPEN_POST -> {
+              markAsRead(intent.getStringExtra(INTENT_EXTRA_KEY_POST_ID)!!)
+              openUrl(context, intent.getStringExtra(INTENT_EXTRA_KEY_POST_URL)!!)
+            }
+            else -> {
+              return@withTimeout
+            }
+          }
           val unreadPosts = postRepository.unreadPosts().first()
           notificationPublisher.showNotifications(unreadPosts, newUnreadPost = null)
         }
@@ -54,11 +53,11 @@ class NotificationActionReceiver : BroadcastReceiver() {
     }
   }
 
-  private fun markAsRead(postId: String) {
+  private suspend fun markAsRead(postId: String) {
     postRepository.markAsRead(postId)
   }
 
-  private fun markAllAsRead() {
+  private suspend fun markAllAsRead() {
     postRepository.markAllAsRead()
   }
 

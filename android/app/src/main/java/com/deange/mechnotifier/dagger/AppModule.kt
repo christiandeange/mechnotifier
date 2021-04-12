@@ -2,8 +2,6 @@ package com.deange.mechnotifier.dagger
 
 import com.deange.mechnotifier.model.PostFilter
 import com.deange.mechnotifier.model.PostFilterSerializer
-import com.deange.mechnotifier.model.UnreadPosts
-import com.deange.mechnotifier.model.UnreadPostsSerializer
 import com.deange.mechnotifier.notification.NotificationChannels
 import com.deange.mechnotifier.topics.TopicRepository
 import com.deange.mechnotifier.topics.TopicWatcher
@@ -37,11 +35,6 @@ abstract class AppModule {
   abstract fun bindsPostFilterSerializer(
     converter: PostFilterSerializer
   ): Serializer<PostFilter>
-
-  @Binds
-  abstract fun bindsUnreadPostsSerializer(
-    converter: UnreadPostsSerializer
-  ): Serializer<UnreadPosts>
 
   companion object {
     @Provides @ElementsIntoSet @SingleInApp

@@ -1,5 +1,8 @@
 package com.deange.mechnotifier.model
 
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 import com.deange.mechnotifier.model.PostType.BUYING
 import com.deange.mechnotifier.model.PostType.SELLING
 import com.deange.mechnotifier.model.PostType.TRADING
@@ -8,14 +11,16 @@ import com.squareup.moshi.JsonClass
 import kotlin.text.RegexOption.IGNORE_CASE
 
 @JsonClass(generateAdapter = true)
+@Entity
 data class Post(
-  @Json(name = "post_id") val id: String,
+  @Json(name = "post_id") @PrimaryKey val id: String,
   val title: String,
   val url: String,
   val flair: String?,
-  @Json(name = "created_utc") val createdSeconds: Long
+  @Json(name = "created_utc") val createdSeconds: Long,
+  val unread: Boolean = true
 ) : Comparable<Post> {
-  @Transient val createdMillis: Long = createdSeconds * 1000
+  @Transient @Ignore val createdMillis: Long = createdSeconds * 1000
 
   fun type(): PostType {
     val postTags = tags()
