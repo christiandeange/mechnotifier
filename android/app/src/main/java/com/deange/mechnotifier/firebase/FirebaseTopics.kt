@@ -1,10 +1,15 @@
 package com.deange.mechnotifier.firebase
 
+import android.util.Log
 import com.deange.mechnotifier.topics.Topic
 import com.deange.mechnotifier.topics.TopicChange
+import com.deange.mechnotifier.topics.asStrings
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.messaging.FirebaseMessaging
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
@@ -38,7 +43,21 @@ class FirebaseTopics
   }
 
   suspend fun applyChangesFrom(topicChange: TopicChange) {
-    unsubscribeFrom(topicChange.deleted)
-    subscribeTo(topicChange.added)
+    coroutineScope {
+      listOf(
+        async {
+          Log.d(TAG, "Unsubscribe from ${topicChange.deleted.asStrings()}")
+          unsubscribeFrom(topicChange.deleted)
+        },
+        async {
+          Log.d(TAG, "Subscribe to ${topicChange.added.asStrings()}")
+          subscribeTo(topicChange.added)
+        }
+      ).awaitAll()
+    }
+  }
+
+  companion object {
+    private val TAG = FirebaseTopics::class.java.simpleName
   }
 }
