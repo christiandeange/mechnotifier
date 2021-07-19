@@ -88,11 +88,7 @@ class NotificationPublisher
       .setGroupSummary(true)
       .setPriority(PRIORITY_DEFAULT)
       .setSmallIcon(R.drawable.ic_baseline_arrow_upward_24)
-      .apply {
-        if (!withSounds) {
-          setNotificationSilent()
-        }
-      }
+      .setSilent(!withSounds)
       .build()
   }
 
@@ -124,11 +120,7 @@ class NotificationPublisher
         .setSmallIcon(R.drawable.ic_baseline_arrow_upward_24)
         .setStyle(BigTextStyle().bigText(post.title))
         .setWhen(post.createdMillis)
-        .apply {
-          if (!withSounds) {
-            setNotificationSilent()
-          }
-        }
+        .setSilent(!withSounds)
         .build()
 
     return id to notification

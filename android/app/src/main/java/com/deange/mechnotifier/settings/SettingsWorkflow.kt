@@ -10,8 +10,11 @@ import com.deange.mechnotifier.topics.TopicRepository
 import com.deange.mechnotifier.view.Text
 import com.squareup.workflow1.Snapshot
 import com.squareup.workflow1.StatefulWorkflow
-import com.squareup.workflow1.action
+import com.squareup.workflow1.WorkflowAction
 import javax.inject.Inject
+
+private typealias Action =
+    WorkflowAction<SettingsWorkflowProps, SettingsState, Unit>.Updater
 
 class SettingsWorkflow
 @Inject constructor(
@@ -30,36 +33,36 @@ class SettingsWorkflow
   )
 
   override fun render(
-    props: SettingsWorkflowProps,
-    state: SettingsState,
+    renderProps: SettingsWorkflowProps,
+    renderState: SettingsState,
     context: RenderContext
   ): SettingsScreen {
     return SettingsScreen(
-      state.region,
-      state.subregion,
-      state.publicTypes,
-      state.postTypes,
-      state.customRegionError,
-      onRegionPicked = { region, subregion ->
-        context.actionSink.send(onRegionPicked(region, subregion))
+      renderState.region,
+      renderState.subregion,
+      renderState.publicTypes,
+      renderState.postTypes,
+      renderState.customRegionError,
+      onRegionPicked = context.eventHandler { region, subregion ->
+        onRegionPicked(region, subregion)
       },
-      onPublicTypesChanged = { publicTypes ->
-        context.actionSink.send(onPublicTypesChanged(publicTypes))
+      onPublicTypesChanged = context.eventHandler { publicTypes ->
+        onPublicTypesChanged(publicTypes)
       },
-      onPostTypesChanged = { postTypes ->
-        context.actionSink.send(onPostTypesChanged(postTypes))
+      onPostTypesChanged = context.eventHandler { postTypes ->
+        onPostTypesChanged(postTypes)
       },
-      onSaveClicked = { context.actionSink.send(onSaveClicked()) },
-      onBackClicked = { context.actionSink.send(onBackClicked()) }
+      onSaveClicked = context.eventHandler { onSaveClicked() },
+      onBackClicked = context.eventHandler { onBackClicked() }
     )
   }
 
   override fun snapshotState(state: SettingsState): Snapshot? = null
 
-  private fun onRegionPicked(
+  private fun Action.onRegionPicked(
     region: Region,
     subregion: Subregion?
-  ) = action {
+  ) {
     state = state.copy(
       region = region,
       subregion = subregion,
@@ -67,15 +70,15 @@ class SettingsWorkflow
     )
   }
 
-  private fun onPublicTypesChanged(publicTypes: Set<PublicType>) = action {
+  private fun Action.onPublicTypesChanged(publicTypes: Set<PublicType>) {
     state = state.copy(publicTypes = publicTypes)
   }
 
-  private fun onPostTypesChanged(postTypes: List<PostType>) = action {
+  private fun Action.onPostTypesChanged(postTypes: List<PostType>) {
     state = state.copy(postTypes = postTypes)
   }
 
-  private fun onSaveClicked() = action {
+  private fun Action.onSaveClicked() {
     val region: Region = state.region
     val regionCode: String = state.region.regionCode
 
@@ -89,19 +92,18 @@ class SettingsWorkflow
     )
 
     if (state.customRegionError == null) {
-      val topics: Set<Topic> = buildSet {
-        add(topicCreator.fromRegion(state.region, state.subregion))
-        addAll(state.publicTypes.map { topicCreator.fromPublicType(it) })
-      }
+      val topics = mutableSetOf<Topic>()
+      topics += topicCreator.fromRegion(state.region, state.subregion)
+      topics += state.publicTypes.map { topicCreator.fromPublicType(it) }
 
       val postFilter = PostFilter(state.postTypes)
 
-      topicRepository.setTopics(topics)
+      topicRepository.setTopics(topics.toSet())
       topicRepository.setPostFilter(postFilter)
     }
   }
 
-  private fun onBackClicked() = action {
+  private fun Action.onBackClicked() {
     setOutput(Unit)
   }
 }

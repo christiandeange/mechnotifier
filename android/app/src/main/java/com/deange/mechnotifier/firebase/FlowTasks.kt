@@ -5,6 +5,7 @@ import com.google.android.gms.tasks.Tasks
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.sendBlocking
+import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
@@ -28,7 +29,7 @@ fun <T : Any> Task<T>.asFlow(): Flow<T> {
         result != null -> {
           if (isActive) {
             // The task completed successfully with an explicit result.
-            sendBlocking(result!!)
+            trySendBlocking(result!!)
           }
         }
         exception != null -> {
