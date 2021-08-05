@@ -4,7 +4,7 @@
   <string name="notification_channel_posts_title">New Posts</string>
   <string name="notification_group_summary">%1$d new mechmarket posts</string>
   <string name="post_type_buying">Buying</string>
-  <string name="post_type_empty_warning">By disabling all post types, you will not receive any notifications!</string>
+  <string name="post_type_empty_warning">By disabling all post types, you will not receive any regional notifications!</string>
   <string name="post_type_selling">Selling</string>
   <string name="post_type_label">Post Type</string>
   <string name="post_type_trading">Trading</string>
@@ -21,8 +21,8 @@
   <string name="region_label">Region</string>
   <string name="region_none">None</string>
   <string name="region_other">Other</string>
-  <string name="region_other_error">Region code must be two letters.</string>
-  <string name="region_reserved_code">Region code is reserved for public posts.</string>
+  <string name="region_other_error">Must be two letters.</string>
+  <string name="region_reserved_code">Reserved for public posts.</string>
   <string name="region_us">USA</string>
-  <string name="settings_save">Save</string>
+  <string name="settings_save">SAVE</string>
 </resources>

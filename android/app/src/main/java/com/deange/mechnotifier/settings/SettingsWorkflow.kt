@@ -38,11 +38,11 @@ class SettingsWorkflow
     context: RenderContext
   ): SettingsScreen {
     return SettingsScreen(
-      renderState.region,
-      renderState.subregion,
-      renderState.publicTypes,
-      renderState.postTypes,
-      renderState.customRegionError,
+      region = renderState.region,
+      subregion = renderState.subregion,
+      selectedPublicTypes = renderState.publicTypes,
+      selectedPostTypes = renderState.postTypes,
+      customRegionError = renderState.customRegionError,
       onRegionPicked = context.eventHandler { region, subregion ->
         onRegionPicked(region, subregion)
       },
@@ -70,7 +70,7 @@ class SettingsWorkflow
     )
   }
 
-  private fun Action.onPublicTypesChanged(publicTypes: Set<PublicType>) {
+  private fun Action.onPublicTypesChanged(publicTypes: List<PublicType>) {
     state = state.copy(publicTypes = publicTypes)
   }
 
@@ -85,7 +85,7 @@ class SettingsWorkflow
     state = state.copy(
       customRegionError = when {
         region !is OtherRegion -> null
-        !regionCode.matches(Regex("\\s\\s")) -> Text(R.string.region_other_error)
+        !regionCode.matches(Regex("[A-Z]{2}")) -> Text(R.string.region_other_error)
         regionCode in PublicType.tagNames() -> Text(R.string.region_reserved_code)
         else -> null
       }

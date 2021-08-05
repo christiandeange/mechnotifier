@@ -37,7 +37,7 @@ class TopicCreator
     return when (parts.size) {
       1 -> {
         val region: Region = findRegion(parts[0]) ?: return null
-        region to null
+        region to region.subregions.firstOrNull()
       }
       2 -> {
         val region: Region = findRegion(parts[0]) ?: return null

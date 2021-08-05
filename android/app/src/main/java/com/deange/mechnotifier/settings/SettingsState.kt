@@ -7,7 +7,7 @@ import com.deange.mechnotifier.view.Text
 data class SettingsState(
   val region: Region,
   val subregion: Subregion?,
-  val publicTypes: Set<PublicType>,
+  val publicTypes: List<PublicType>,
   val postTypes: List<PostType>,
   val customRegionError: Text? = null
 )

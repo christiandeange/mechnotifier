@@ -5,4 +5,4 @@ import javax.inject.Inject
 
 class SettingsViewRegistry
 @Inject constructor() : ViewRegistry
-by ViewRegistry(SettingsLayoutRunner)
+by ViewRegistry(SettingsComposeLayoutRunner)

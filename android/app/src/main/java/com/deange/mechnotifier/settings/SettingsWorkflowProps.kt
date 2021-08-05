@@ -6,6 +6,6 @@ import com.deange.mechnotifier.topics.PublicType
 data class SettingsWorkflowProps(
   val region: Region,
   val subregion: Subregion?,
-  val publicTypes: Set<PublicType>,
+  val publicTypes: List<PublicType>,
   val postFilter: PostFilter
 )

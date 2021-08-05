@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
     postFilter: PostFilter
   ) {
     val (region, subregion) = topics.mapNotNull { topicCreator.toRegionOrNull(it) }.first()
-    val publicTypes = topics.mapNotNull { topicCreator.toPublicTypeOrNull(it) }.toSet()
+    val publicTypes = topics.mapNotNull { topicCreator.toPublicTypeOrNull(it) }
     val props = SettingsWorkflowProps(
       region = region,
       subregion = subregion,

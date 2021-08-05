@@ -2,6 +2,8 @@ package com.deange.mechnotifier.view
 
 import android.content.Context
 import androidx.annotation.StringRes
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 
 /**
  * Abstraction for text content.
@@ -11,7 +13,11 @@ import androidx.annotation.StringRes
  * view layer, where a themed [Context] is readily available.
  */
 interface Text {
+  /** Computes the value of the text. */
   fun evaluate(context: Context): CharSequence
+
+  /** Computes the value of the text during a composition. */
+  @Composable fun evaluate(): CharSequence = evaluate(LocalContext.current)
 
   /** Concatenates two [Text] objects with no separator. */
   operator fun plus(otherText: Text): Text = CompoundText(this, otherText)
